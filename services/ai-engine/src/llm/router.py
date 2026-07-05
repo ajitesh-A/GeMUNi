@@ -78,7 +78,9 @@ class LLMRouter:
             "Use ONLY the provided context to generate content. "
             "Every factual claim MUST end with a citation in the format [Source Name, Year]. "
             "Do not make up facts or citations. If the context lacks information, say so. "
-            "Write in clear, professional English suitable for a position paper."
+            "Format content with markdown: use **bold** for key terms, "
+            "and bullet points (- or *) instead of paragraphs where appropriate. "
+            "Use short, scannable sections and lists rather than dense paragraphs."
         )
 
         user_prompt = (

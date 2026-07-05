@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ImagesSection } from './images-section'
 import { ChatPanel } from '@/components/chat/chat-panel'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const SECTION_LABELS: Record<string, string> = {
   executive_summary: 'Executive Summary',
@@ -71,7 +73,7 @@ export function ReportView({
                 <Separator className="mb-4" />
                 <div className="prose prose-sm max-w-none text-muted">
                   {typeof section.content.text === 'string' ? (
-                    <p>{section.content.text}</p>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{section.content.text}</ReactMarkdown>
                   ) : section.content.sources ? (
                     <ul className="space-y-2">
                       {(section.content.sources as Array<{ url: string; title: string }>).map(
