@@ -3,7 +3,7 @@ services:
     name: gemuni-searxng
     runtime: docker
     repo: https://github.com/ajitesh-A/GeMUNi
-    region: oregon
+    region: virginia
     plan: free
     dockerfilePath: services/ai-engine/Dockerfile.searxng
     dockerContext: services/ai-engine
@@ -14,7 +14,7 @@ services:
   - type: web
     name: gemuni-ai-engine
     runtime: python
-    region: oregon
+    region: virginia
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
@@ -27,3 +27,23 @@ services:
         sync: false
       - key: LLM_MODEL
         value: meta-llama/llama-3.3-70b-instruct:free
+
+  - type: web
+    name: gemuni-frontend
+    runtime: docker
+    repo: https://github.com/ajitesh-A/GeMUNi
+    region: virginia
+    plan: free
+    dockerfilePath: apps/web/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
+      - key: AUTH_URL
+        value: https://nexgemai.app
+      - key: AI_ENGINE_URL
+        value: https://gemuni-ai-engine.onrender.com
+      - key: RESEND_API_KEY
+        sync: false
