@@ -10,10 +10,10 @@ export function UnBackground() {
     <div className="fixed inset-0 z-0 flex items-start justify-center overflow-hidden pointer-events-none">
       <motion.div
         style={{ y }}
-        className="relative mt-20 flex items-center justify-center"
+        className="mt-20 flex items-center justify-center"
         aria-hidden="true"
       >
-        <div className="h-[600px] w-[600px] opacity-[0.15] dark:opacity-[0.08]">
+        <div className="h-[600px] w-[600px] opacity-[0.15] blur-[6px] dark:opacity-[0.08]">
           <svg viewBox="0 0 512 512" className="h-full w-full text-accent" fill="none">
             <g stroke="currentColor" strokeWidth="1.2">
               <circle cx="256" cy="256" r="150" strokeWidth="1.8" />
@@ -50,7 +50,6 @@ export function UnBackground() {
             </g>
           </svg>
         </div>
-        <div className="absolute inset-0 h-[600px] w-[600px] backdrop-blur-[6px]" />
       </motion.div>
     </div>
   )
