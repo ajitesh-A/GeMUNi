@@ -34,6 +34,7 @@ export default async function ReportPage({
   return (
     <div className="px-6 py-16">
       <ReportView
+        reportId={report.id}
         country={report.country}
         committee={report.committee}
         agenda={report.agenda}
