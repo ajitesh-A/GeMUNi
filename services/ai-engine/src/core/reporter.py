@@ -1,5 +1,5 @@
 from src.core.summarizer import generate_section
-from src.core.citation import format_citation, get_source_name
+from src.core.citation import get_source_name
 from src.api.schemas import SectionResult, CitationResult
 
 REPORT_SECTIONS = [
@@ -25,12 +25,15 @@ async def assemble_report(
     sections = []
 
     for idx, section_type in enumerate(REPORT_SECTIONS):
-        content, context = await generate_section(
-            section_type=section_type,
-            country=country,
-            committee=committee,
-            agenda=agenda,
-        )
+        try:
+            content, context = await generate_section(
+                section_type=section_type,
+                country=country,
+                committee=committee,
+                agenda=agenda,
+            )
+        except Exception:
+            content = f"**{section_type.replace('_', ' ').title()}**\n\nContent could not be generated for this section. Please check your OpenRouter API key configuration."
 
         citations = []
         for source in sources[:5]:

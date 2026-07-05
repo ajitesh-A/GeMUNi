@@ -21,7 +21,7 @@ def get_or_create_collection(name: str = "gemuni_sources"):
     client = get_chroma_client()
     try:
         return client.get_collection(name)
-    except ValueError:
+    except Exception:
         return client.create_collection(name)
 
 

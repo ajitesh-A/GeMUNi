@@ -40,7 +40,7 @@ export default async function ReportPage({
         agenda={report.agenda}
         sections={report.sections.map((s) => ({
           section_type: s.sectionType,
-          content: s.content as Record<string, unknown>,
+          content: JSON.parse(s.content) as Record<string, unknown>,
           order_index: s.orderIndex,
         }))}
       />

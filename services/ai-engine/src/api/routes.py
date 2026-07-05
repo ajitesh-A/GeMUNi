@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from src.api.schemas import (
     GenerateRequest,
     GenerateResponse,
+    ReportResult,
     ChatRequest,
     ChatResponse,
     CitationResult,
@@ -12,27 +13,18 @@ from src.llm.router import llm
 router = APIRouter()
 
 
-@router.post("/generate", response_model=GenerateResponse)
+@router.post("/generate", response_model=ReportResult)
 async def generate_research(req: GenerateRequest):
     try:
-        from src.core.pipeline import run_research_pipeline
-
         result = await run_research_pipeline(
             country=req.country,
             committee=req.committee,
             agenda=req.agenda,
             report_id=req.report_id,
         )
-
-        return GenerateResponse(
-            report_id=result.report_id,
-            status="completed",
-        )
+        return result
     except Exception as e:
-        return GenerateResponse(
-            report_id=req.report_id,
-            status="failed",
-        )
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/chat", response_model=ChatResponse)

@@ -15,7 +15,7 @@ model User {
   avatarUrl    String?
   createdAt    DateTime @default(now())
 
-  reports Report[]
+  reports      Report[]
 }
 
 model Report {

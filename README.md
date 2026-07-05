@@ -111,8 +111,10 @@ Open http://localhost:3000
 ### Getting Free API Keys (No Credit Card Required)
 
 1. **OpenRouter** (https://openrouter.ai) — Free LLM access
-   - Sign up → Generate API key
-   - Free models: DeepSeek R1/V3, Qwen 2.5, Llama 3.x
+   - Sign up → Add billing (may require card verification even for free models, but no charges)
+   - Generate API key
+   - Free models: DeepSeek R1/V3, Qwen 2.5, Llama 3.x, Mistral
+   - **Note:** Some OpenRouter accounts require adding a payment method even for free-tier models (typically a $0 authorization hold). Without billing configured, the AI engine falls back to informative mock content — the platform still works end-to-end with realistic sample data.
 
 2. **Supabase** (https://supabase.com) — Free PostgreSQL + Auth
    - Sign up → Create project

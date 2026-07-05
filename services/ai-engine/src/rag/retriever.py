@@ -7,15 +7,21 @@ def retrieve_context(
     query: str,
     n_results: int = 10,
 ) -> list[dict]:
-    query_embedding = embed_text(query)
-    results = query_similar(
-        query_embedding=query_embedding,
-        n_results=min(n_results, settings.max_sources_per_section),
-    )
-    return results
+    try:
+        query_embedding = embed_text(query)
+        results = query_similar(
+            query_embedding=query_embedding,
+            n_results=min(n_results, settings.max_sources_per_section),
+        )
+        return results
+    except Exception:
+        return []
 
 
 def format_context(results: list[dict]) -> str:
+    if not results:
+        return "No specific sources found for this query. Generate content based on general knowledge of the topic."
+
     formatted = []
     for i, r in enumerate(results, 1):
         source = r["metadata"].get("source_name", "Unknown")
