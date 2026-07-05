@@ -1,4 +1,5 @@
 const config = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -33,8 +34,12 @@ const config = {
           800: '#0B131C',
           900: '#050A10',
         },
-        background: '#F4FAFF',
-        text: '#111111',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: 'var(--card)',
+        'card-fg': 'var(--card-fg)',
+        muted: 'var(--muted)',
+        border: 'var(--border)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

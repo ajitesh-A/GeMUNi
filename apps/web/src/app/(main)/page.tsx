@@ -23,15 +23,6 @@ export default function LandingPage() {
         animate="animate"
         variants={stagger}
       >
-        <motion.div
-          variants={fadeUp}
-          transition={{ duration: 0.5 }}
-          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1.5 text-sm text-primary-700"
-        >
-          <span className="h-2 w-2 rounded-full bg-primary" />
-          AI-Powered MUN Research
-        </motion.div>
-
         <motion.h1
           variants={fadeUp}
           transition={{ duration: 0.5, delay: 0.1 }}

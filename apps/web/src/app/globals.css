@@ -9,23 +9,24 @@
     --background: #F4FAFF;
     --foreground: #111111;
     --card: #FFFFFF;
-    --card-foreground: #111111;
-    --primary: #4DA6FF;
-    --primary-foreground: #FFFFFF;
-    --secondary: #FFFFFF;
-    --secondary-foreground: #1A2A44;
-    --accent: #1A2A44;
-    --accent-foreground: #FFFFFF;
-    --muted: #6B7280;
-    --muted-foreground: #6B7280;
+    --card-fg: #111111;
     --border: #E5E7EB;
-    --ring: #4DA6FF;
+    --muted: #6B7280;
+  }
+
+  .dark {
+    --background: #0F172A;
+    --foreground: #F1F5F9;
+    --card: #1E293B;
+    --card-fg: #F1F5F9;
+    --border: #1E293B;
+    --muted: #94A3B8;
   }
 }
 
 @layer base {
   body {
-    @apply bg-background text-text;
+    @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
   }
 }

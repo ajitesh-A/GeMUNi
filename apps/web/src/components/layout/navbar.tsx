@@ -5,12 +5,13 @@ import { useSession, signOut } from 'next-auth/react'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/ui/logo'
+import { ThemeToggle } from './theme-toggle'
 
 export function Navbar() {
   const { data: session } = useSession()
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Logo />
 
@@ -29,7 +30,7 @@ export function Navbar() {
               >
                 Dashboard
               </Link>
-              <div className="flex items-center gap-3 pl-3 border-l border-gray-200">
+              <div className="flex items-center gap-3 pl-3 border-l border-border">
                 <Avatar
                   initials={(session.user.name || session.user.email || 'U').charAt(0).toUpperCase()}
                   size="sm"
@@ -57,6 +58,10 @@ export function Navbar() {
               </Link>
             </>
           )}
+
+          <div className="flex items-center pl-3 border-l border-border">
+            <ThemeToggle />
+          </div>
         </nav>
       </div>
     </header>
