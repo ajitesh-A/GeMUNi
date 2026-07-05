@@ -33,7 +33,7 @@ class LLMRouter:
         system_prompt: str,
         user_prompt: str,
         temperature: float = 0.3,
-        max_tokens: int = 2048,
+        max_tokens: int = 1024,
     ) -> str:
         if settings.groq_api_key:
             try:

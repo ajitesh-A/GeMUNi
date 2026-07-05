@@ -55,7 +55,7 @@ async function generateReport(
   try {
     if (AI_ENGINE_URL) {
       const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 120000)
+      const timeout = setTimeout(() => controller.abort(), 150000)
 
       const res = await fetch(`${AI_ENGINE_URL}/api/v1/generate`, {
         method: 'POST',

@@ -1,3 +1,4 @@
+import asyncio
 from src.core.summarizer import generate_section
 from src.core.citation import get_source_name
 from src.api.schemas import SectionResult, CitationResult
@@ -9,11 +10,11 @@ REPORT_SECTIONS = [
     "current_situation",
     "country_position",
     "un_resolutions",
-    "bloc_positions",
-    "speaking_points",
+    "speaking_points_and_bloc_positions",
     "possible_solutions",
-    "questions_to_ask",
 ]
+
+MAX_CONCURRENT_LLM = 3
 
 
 async def assemble_report(
@@ -22,38 +23,40 @@ async def assemble_report(
     agenda: str,
     sources: list[dict],
 ) -> list[SectionResult]:
-    sections = []
+    sem = asyncio.Semaphore(MAX_CONCURRENT_LLM)
 
-    for idx, section_type in enumerate(REPORT_SECTIONS):
-        try:
-            content, context = await generate_section(
-                section_type=section_type,
-                country=country,
-                committee=committee,
-                agenda=agenda,
-            )
-        except Exception as e:
-            print(f"[Reporter] Section '{section_type}' failed: {e}")
-            content = f"**{section_type.replace('_', ' ').title()}**\n\nContent could not be generated for this section. Please check your OpenRouter API key configuration."
-
-        citations = []
-        for source in sources[:5]:
-            citations.append(
-                CitationResult(
-                    statement="",
-                    url=source.get("url", ""),
-                    source_name=get_source_name(source.get("url", "")),
+    async def gen_section(idx: int, section_type: str) -> SectionResult:
+        async with sem:
+            try:
+                content, context = await generate_section(
+                    section_type=section_type,
+                    country=country,
+                    committee=committee,
+                    agenda=agenda,
                 )
-            )
+            except Exception as e:
+                print(f"[Reporter] Section '{section_type}' failed: {e}")
+                content = f"**{section_type.replace('_', ' ').title()}**\n\nContent could not be generated for this section."
 
-        sections.append(
-            SectionResult(
+            citations = []
+            for source in sources[:5]:
+                citations.append(
+                    CitationResult(
+                        statement="",
+                        url=source.get("url", ""),
+                        source_name=get_source_name(source.get("url", "")),
+                    )
+                )
+
+            return SectionResult(
                 section_type=section_type,
                 content={"text": content},
                 order_index=idx,
                 citations=citations,
             )
-        )
+
+    tasks = [gen_section(idx, st) for idx, st in enumerate(REPORT_SECTIONS)]
+    sections = await asyncio.gather(*tasks)
 
     sections.append(
         SectionResult(

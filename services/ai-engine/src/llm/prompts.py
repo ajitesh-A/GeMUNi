@@ -52,6 +52,15 @@ SECTION_PROMPTS = {
         "likely opponents, non-aligned states, and regional bloc positions. "
         "Explain the reasoning behind each bloc's position."
     ),
+    "speaking_points_and_bloc_positions": (
+        "Generate debate-ready speaking points for {country} on '{agenda}' and "
+        "describe the likely bloc positions. Use **bold** sub-headings to separate "
+        "two sections:\n\n"
+        "**Bloc Positions:** Identify likely allies for {country}, likely opponents, "
+        "non-aligned states, and regional bloc positions. Explain reasoning.\n\n"
+        "**Speaking Points:** Strong arguments supporting {country}'s position, "
+        "likely counterarguments from opponents, and suggested responses."
+    ),
     "speaking_points": (
         "Generate debate-ready speaking points for {country} on '{agenda}' as "
         "bullet points. Include: strong arguments supporting {country}'s position, "
