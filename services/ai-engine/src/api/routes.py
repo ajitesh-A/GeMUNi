@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import APIRouter, HTTPException
 from src.api.schemas import (
     GenerateRequest,
@@ -6,6 +7,7 @@ from src.api.schemas import (
     ChatRequest,
     ChatResponse,
     CitationResult,
+    SectionResult,
 )
 from src.core.pipeline import run_research_pipeline
 from src.llm.router import llm
@@ -16,15 +18,47 @@ router = APIRouter()
 @router.post("/generate", response_model=ReportResult)
 async def generate_research(req: GenerateRequest):
     try:
-        result = await run_research_pipeline(
+        result = await asyncio.wait_for(
+            run_research_pipeline(
+                country=req.country,
+                committee=req.committee,
+                agenda=req.agenda,
+                report_id=req.report_id,
+            ),
+            timeout=100,
+        )
+        return result
+    except asyncio.TimeoutError:
+        return ReportResult(
+            report_id=req.report_id,
             country=req.country,
             committee=req.committee,
             agenda=req.agenda,
-            report_id=req.report_id,
+            sections=[
+                SectionResult(
+                    section_type="executive_summary",
+                    content={"text": "The research pipeline timed out during source retrieval. The AI engine will still generate content based on general knowledge.\n\n**Note:** Citations may reference general sources rather than specific documents. Please verify facts independently."},
+                    order_index=0,
+                    citations=[],
+                )
+            ],
         )
-        return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"[Generate] Pipeline failed: {e}")
+        return ReportResult(
+            report_id=req.report_id,
+            country=req.country,
+            committee=req.committee,
+            agenda=req.agenda,
+            sections=[
+                SectionResult(
+                    section_type="executive_summary",
+                    content={"text": f"**Report Generation Note**\n\nThe research pipeline encountered an issue: {e}. The AI engine was unable to retrieve external sources. Please try again or check service configuration."},
+                    order_index=0,
+                    citations=[],
+                )
+            ],
+        )
 
 
 @router.post("/chat", response_model=ChatResponse)

@@ -30,7 +30,7 @@ async def crawl_direct_sources(
 ) -> list[dict]:
     keywords = country.lower().split() + agenda.lower().split()
     results = []
-    for url in TRUSTED_SOURCE_URLS[:8]:
+    for url in TRUSTED_SOURCE_URLS[:4]:
         try:
             html = await fetch_page(url)
             if html:

@@ -23,7 +23,7 @@ async def run_research_pipeline(
 
     try:
         trusted = await asyncio.wait_for(
-            search_trusted_sources(country, agenda), timeout=30
+            search_trusted_sources(country, agenda), timeout=20
         )
     except Exception as e:
         print(f"[Pipeline] search_trusted_sources failed: {e}")
