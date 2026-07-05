@@ -43,8 +43,8 @@ class LLMRouter:
                     temperature=temperature,
                     max_tokens=max_tokens,
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[LLM Router] Groq failed: {e}")
 
         if settings.gemini_api_key:
             try:
@@ -54,9 +54,10 @@ class LLMRouter:
                     temperature=temperature,
                     max_tokens=max_tokens,
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[LLM Router] Gemini failed: {e}")
 
+        print("[LLM Router] Falling through to OpenRouter")
         return await self.openrouter.generate(
             system_prompt=system_prompt,
             user_prompt=user_prompt,

@@ -74,13 +74,21 @@ async function generateReport(
             data: { status: 'completed' },
           })
           return
+        } else {
+          console.error(`Generate AI engine returned OK but no sections:`, JSON.stringify(data))
         }
+      } else {
+        const body = await res.text().catch(() => '')
+        console.error(`Generate AI engine returned ${res.status}:`, body)
       }
+    } else {
+      console.error('Generate AI_ENGINE_URL not set')
     }
-  } catch {
-    // AI engine failed, fall through to mock
+  } catch (e) {
+    console.error('Generate AI engine fetch failed:', e)
   }
 
+  console.error('Falling back to mock generation')
   await mockGeneration(reportId)
 }
 

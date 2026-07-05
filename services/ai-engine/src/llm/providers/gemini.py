@@ -40,6 +40,8 @@ class GeminiProvider:
 
             if response.status_code == 429:
                 raise ValueError("Gemini rate limited")
+            if response.status_code == 403:
+                raise ValueError("Gemini 403 — invalid or expired API key")
 
             response.raise_for_status()
             data = response.json()

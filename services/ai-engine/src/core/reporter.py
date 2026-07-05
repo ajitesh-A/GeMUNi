@@ -32,7 +32,8 @@ async def assemble_report(
                 committee=committee,
                 agenda=agenda,
             )
-        except Exception:
+        except Exception as e:
+            print(f"[Reporter] Section '{section_type}' failed: {e}")
             content = f"**{section_type.replace('_', ' ').title()}**\n\nContent could not be generated for this section. Please check your OpenRouter API key configuration."
 
         citations = []

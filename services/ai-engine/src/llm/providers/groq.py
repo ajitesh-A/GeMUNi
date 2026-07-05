@@ -28,9 +28,10 @@ class GroqProvider:
                 return await self._try_generate(
                     model, system_prompt, user_prompt, temperature, max_tokens
                 )
-            except Exception:
-                continue
+            except Exception as e:
+                print(f"[Groq] Model {model} failed: {e}")
 
+        print("[Groq] All models failed")
         raise ValueError("All Groq models failed")
 
     async def _try_generate(

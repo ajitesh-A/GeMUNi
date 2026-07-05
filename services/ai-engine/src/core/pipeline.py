@@ -25,14 +25,16 @@ async def run_research_pipeline(
         trusted = await asyncio.wait_for(
             search_trusted_sources(country, agenda), timeout=15
         )
-    except Exception:
+    except Exception as e:
+        print(f"[Pipeline] search_trusted_sources failed: {e}")
         trusted = []
 
     try:
         direct = await asyncio.wait_for(
             crawl_direct_sources(country, agenda), timeout=15
         )
-    except Exception:
+    except Exception as e:
+        print(f"[Pipeline] crawl_direct_sources failed: {e}")
         direct = []
 
     all_sources = deduplicate_sources(trusted + direct)
@@ -65,14 +67,15 @@ async def run_research_pipeline(
                 metadatas=metadatas,
                 documents=texts,
             )
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"[Pipeline] embed/store failed: {e}")
 
     try:
         sections = await asyncio.wait_for(
             assemble_report(country, committee, agenda, ranked), timeout=90
         )
-    except Exception:
+    except Exception as e:
+        print(f"[Pipeline] assemble_report failed/timed out: {e}")
         sections = _fallback_sections()
 
     return ReportResult(

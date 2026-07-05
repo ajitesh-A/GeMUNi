@@ -135,9 +135,10 @@ class OpenRouterProvider:
                 return await self._try_generate(
                     model, system_prompt, user_prompt, temperature, max_tokens
                 )
-            except Exception:
-                continue
+            except Exception as e:
+                print(f"[OpenRouter] Model {model} failed: {e}")
 
+        print(f"[OpenRouter] All {len(models_to_try)} models failed, returning mock response")
         return self._mock_response(system_prompt, user_prompt)
 
     async def _try_generate(
