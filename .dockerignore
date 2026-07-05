@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.git/
+*.log
+*.db
+*.txt
+chroma_data/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.local
+dist/
