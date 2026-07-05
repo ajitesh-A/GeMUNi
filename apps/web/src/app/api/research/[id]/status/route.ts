@@ -22,15 +22,17 @@ export async function GET(
       return NextResponse.json({
         status: report.status,
         progress: report.status === 'completed' ? 100 : 0,
+        v: 2,
       })
     }
 
     if (Date.now() - new Date(report.createdAt).getTime() > FIVE_MIN) {
+      console.log(`[Status] Report ${params.id} stuck for >5min, marking failed`)
       await prisma.report.update({
         where: { id: params.id },
         data: { status: 'failed' },
       })
-      return NextResponse.json({ status: 'failed', progress: 0 })
+      return NextResponse.json({ status: 'failed', progress: 0, v: 2 })
     }
 
     if (AI_ENGINE_URL) {
@@ -47,6 +49,7 @@ export async function GET(
         if (res.ok) {
           const data = await res.json()
           if (data.sections && data.sections.length > 0) {
+            console.log(`[Status] Report ${params.id}: AI engine has ${data.sections.length} sections, saving`)
             for (const section of data.sections) {
               await prisma.reportSection.create({
                 data: {
@@ -61,16 +64,24 @@ export async function GET(
               where: { id: params.id },
               data: { status: 'completed' },
             })
-            return NextResponse.json({ status: 'completed', progress: 100 })
+            console.log(`[Status] Report ${params.id}: completed`)
+            return NextResponse.json({ status: 'completed', progress: 100, v: 2 })
+          } else {
+            console.log(`[Status] Report ${params.id}: AI engine returned no sections yet`)
           }
+        } else {
+          console.log(`[Status] Report ${params.id}: AI engine returned ${res.status}`)
         }
-      } catch {
-        // AI engine poll failed — continue showing generating
+      } catch (e) {
+        console.log(`[Status] Report ${params.id}: AI engine poll error: ${e}`)
       }
+    } else {
+      console.log(`[Status] Report ${params.id}: AI_ENGINE_URL not set`)
     }
 
-    return NextResponse.json({ status: 'generating', progress: 50 })
-  } catch {
+    return NextResponse.json({ status: 'generating', progress: 50, v: 2 })
+  } catch (e) {
+    console.error(`[Status] Report ${params.id}: internal error: ${e}`)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

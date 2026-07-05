@@ -41,8 +41,9 @@ export async function POST(req: Request) {
       console.error('Generate: AI_ENGINE_URL not set')
     }
 
+    console.log(`[Generate] Report ${report.id} created, starting pipeline`)
     return NextResponse.json(
-      { report_id: report.id, status: 'generating' },
+      { report_id: report.id, status: 'generating', v: 2 },
       { status: 201 },
     )
   } catch (error) {
