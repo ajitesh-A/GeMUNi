@@ -8,12 +8,14 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String?
-  passwordHash String
-  avatarUrl    String?
-  createdAt    DateTime @default(now())
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String?
+  passwordHash      String
+  emailVerified     DateTime?
+  verificationToken String?   @unique
+  avatarUrl         String?
+  createdAt         DateTime  @default(now())
 
   reports Report[]
 }

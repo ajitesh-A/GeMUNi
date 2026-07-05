@@ -46,6 +46,21 @@ export const COMMITTEES = [
   { value: 'UNESCO', label: 'UN Educational, Scientific and Cultural Organization', un: true },
   { value: 'IMF', label: 'International Monetary Fund', un: true },
   { value: 'FAO', label: 'Food and Agriculture Organization', un: true },
+  { value: 'DISEC', label: 'Disarmament and International Security Committee', un: true },
+  { value: 'SOCHUM', label: 'Social, Humanitarian & Cultural Committee', un: true },
+  { value: 'SPECPOL', label: 'Special Political and Decolonization Committee', un: true },
+  { value: 'UNODC', label: 'UN Office on Drugs and Crime', un: true },
+  { value: 'UNDP', label: 'UN Development Programme', un: true },
+  { value: 'UNHABITAT', label: 'UN Human Settlements Programme', un: true },
+  { value: 'UNFCCC', label: 'UN Framework Convention on Climate Change', un: true },
+  { value: 'ILO', label: 'International Labour Organization', un: true },
+  { value: 'WFP', label: 'World Food Programme', un: true },
+  { value: 'UNRWA', label: 'UN Relief and Works Agency', un: true },
+  { value: 'IMO', label: 'International Maritime Organization', un: true },
+  { value: 'ICAO', label: 'International Civil Aviation Organization', un: true },
+  { value: 'UNIDO', label: 'UN Industrial Development Organization', un: true },
+  { value: 'OHCHR', label: 'Office of the High Commissioner for Human Rights', un: true },
+  { value: 'UNHCR', label: 'UN Refugee Agency', un: true },
 ] as const
 
 export const REPORT_SECTIONS = [

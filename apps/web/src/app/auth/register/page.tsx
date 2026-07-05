@@ -1,13 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [registered, setRegistered] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -42,11 +41,35 @@ export default function RegisterPage() {
         return
       }
 
-      router.push('/auth/login')
+      setRegistered(true)
     } catch {
       setError('Something went wrong')
       setLoading(false)
     }
+  }
+
+  if (registered) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-6">
+        <div className="w-full max-w-sm text-center">
+          <div className="mb-8">
+            <Link href="/" className="text-2xl font-bold text-accent">
+              GeMUNi.ai
+            </Link>
+            <h1 className="mt-4 text-xl font-semibold text-accent">Check your email</h1>
+            <p className="mt-2 text-sm text-muted">
+              We sent a verification link to your email address. Click the link to activate your account.
+            </p>
+          </div>
+          <Link
+            href="/auth/login"
+            className="inline-block rounded-lg bg-accent px-6 py-2 text-sm font-semibold text-white hover:bg-accent-700"
+          >
+            Go to Sign In
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   return (

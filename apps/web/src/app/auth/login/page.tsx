@@ -2,13 +2,15 @@
 
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const verified = searchParams.get('verified') === 'true'
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,7 +25,7 @@ export default function LoginPage() {
     })
 
     if (result?.error) {
-      setError('Invalid email or password')
+      setError(result.error === 'Email not verified' ? 'Please verify your email before signing in' : 'Invalid email or password')
       setLoading(false)
     } else {
       router.push('/dashboard')
@@ -43,6 +45,12 @@ export default function LoginPage() {
             Welcome back to your research hub
           </p>
         </div>
+
+        {verified && (
+          <div className="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+            Email verified! You can now sign in.
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
