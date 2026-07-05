@@ -6,6 +6,7 @@ services:
     region: oregon
     plan: free
     dockerfilePath: services/ai-engine/Dockerfile.searxng
+    dockerContext: services/ai-engine
     envVars:
       - key: SEARXNG_BASE_URL
         value: https://gemuni-searxng.onrender.com
