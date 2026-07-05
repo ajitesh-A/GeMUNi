@@ -1,3 +1,4 @@
+import asyncio
 import httpx
 from src.config import settings
 
@@ -5,6 +6,9 @@ GROQ_MODELS = [
     "llama-3.1-8b-instant",
     "llama-3.3-70b-versatile",
 ]
+
+MAX_RETRIES = 3
+BASE_DELAY = 2.0
 
 
 class GroqProvider:
@@ -42,27 +46,41 @@ class GroqProvider:
         temperature: float,
         max_tokens: int,
     ) -> str:
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": model,
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt},
-                    ],
-                    "temperature": temperature,
-                    "max_tokens": max_tokens,
-                },
-            )
+        last_exc = None
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=30.0) as client:
+                    response = await client.post(
+                        "https://api.groq.com/openai/v1/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {self.api_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json={
+                            "model": model,
+                            "messages": [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": user_prompt},
+                            ],
+                            "temperature": temperature,
+                            "max_tokens": max_tokens,
+                        },
+                    )
 
-            if response.status_code == 429:
-                raise ValueError("Groq rate limited")
+                    if response.status_code == 429:
+                        delay = BASE_DELAY * (2 ** attempt)
+                        print(f"[Groq] Model {model} rate limited, retry {attempt + 1}/{MAX_RETRIES} in {delay}s")
+                        await asyncio.sleep(delay)
+                        continue
 
-            response.raise_for_status()
-            data = response.json()
-            return data["choices"][0]["message"]["content"]
+                    response.raise_for_status()
+                    data = response.json()
+                    return data["choices"][0]["message"]["content"]
+            except Exception as e:
+                if attempt < MAX_RETRIES - 1:
+                    delay = BASE_DELAY * (2 ** attempt)
+                    print(f"[Groq] Model {model} attempt {attempt + 1} failed: {e}, retrying in {delay}s")
+                    await asyncio.sleep(delay)
+                last_exc = e
+
+        raise ValueError(f"All retries exhausted for {model}: {last_exc}")

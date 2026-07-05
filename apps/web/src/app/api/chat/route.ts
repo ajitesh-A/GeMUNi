@@ -31,13 +31,37 @@ export async function POST(req: Request) {
 
     if (AI_ENGINE_URL) {
       try {
+        const sections = await prisma.reportSection.findMany({
+          where: { reportId: report_id },
+          orderBy: { orderIndex: 'asc' },
+          select: { sectionType: true, content: true },
+        })
+
+        const context = sections.map((s) => {
+          let text = ''
+          try {
+            const parsed = JSON.parse(s.content)
+            text = parsed.text || ''
+          } catch {
+            text = s.content
+          }
+          return `[${s.sectionType.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}]\n${text}`
+        }).join('\n\n')
+
         const controller = new AbortController()
         const timeout = setTimeout(() => controller.abort(), 30000)
 
         const aiRes = await fetch(`${AI_ENGINE_URL}/api/v1/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ report_id, message }),
+          body: JSON.stringify({
+            report_id,
+            message,
+            context,
+            country: report.country,
+            committee: report.committee,
+            agenda: report.agenda,
+          }),
           signal: controller.signal,
         })
         clearTimeout(timeout)

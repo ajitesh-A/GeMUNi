@@ -13,12 +13,14 @@ async def search_trusted_sources(
     if settings.searxng_base_url:
         try:
             return await searxng_search(country, agenda, settings.searxng_base_url)
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"[Search] SearXNG search failed: {e}")
 
     try:
+        print("[Search] Falling back to keyword crawl")
         return await keyword_crawl_search(country, agenda)
-    except Exception:
+    except Exception as e:
+        print(f"[Search] Keyword crawl also failed: {e}")
         return []
 
 

@@ -47,6 +47,10 @@ class ReportResult(BaseModel):
 class ChatRequest(BaseModel):
     report_id: str
     message: str
+    context: str = ""
+    country: str = ""
+    committee: str = ""
+    agenda: str = ""
 
 
 class ChatResponse(BaseModel):
