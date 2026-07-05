@@ -12,7 +12,7 @@ export function Separator({
   return (
     <div
       className={cn(
-        'bg-gray-100',
+        'bg-border',
         orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
         className,
       )}

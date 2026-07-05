@@ -30,7 +30,7 @@ export default function LandingPage() {
         <motion.h1
           variants={fadeUp}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mx-auto max-w-4xl text-5xl font-bold leading-tight text-accent md:text-6xl"
+          className="mx-auto max-w-4xl text-5xl font-bold leading-tight text-accent dark:text-foreground md:text-6xl"
         >
           AI Research Assistant for{' '}
           <span className="text-primary">Model United Nations</span>
@@ -93,7 +93,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5 }}
               className="rounded-xl border border-border bg-card p-8"
             >
-              <h3 className="text-lg font-semibold text-accent">{f.title}</h3>
+              <h3 className="text-lg font-semibold text-accent dark:text-foreground">{f.title}</h3>
               <p className="mt-2 text-sm text-muted">{f.desc}</p>
             </motion.div>
           ))}
