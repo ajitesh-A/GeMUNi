@@ -1,0 +1,13 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+*.pyc
+__pycache__/
+*.egg-info/
+.venv/
+venv/
+*.db
+chroma_data/
+.vercel
