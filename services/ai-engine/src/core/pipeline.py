@@ -21,21 +21,25 @@ async def run_research_pipeline(
     ranked = []
     sections: list[SectionResult] = []
 
-    try:
-        trusted = await asyncio.wait_for(
-            search_trusted_sources(country, agenda), timeout=20
-        )
-    except Exception as e:
-        print(f"[Pipeline] search_trusted_sources failed: {e}")
-        trusted = []
+    async def _search() -> list:
+        try:
+            return await asyncio.wait_for(
+                search_trusted_sources(country, agenda), timeout=20
+            )
+        except Exception as e:
+            print(f"[Pipeline] search_trusted_sources failed: {e}")
+            return []
 
-    try:
-        direct = await asyncio.wait_for(
-            crawl_direct_sources(country, agenda), timeout=20
-        )
-    except Exception as e:
-        print(f"[Pipeline] crawl_direct_sources failed: {e}")
-        direct = []
+    async def _crawl() -> list:
+        try:
+            return await asyncio.wait_for(
+                crawl_direct_sources(country, agenda), timeout=20
+            )
+        except Exception as e:
+            print(f"[Pipeline] crawl_direct_sources failed: {e}")
+            return []
+
+    trusted, direct = await asyncio.gather(_search(), _crawl())
 
     all_sources = deduplicate_sources(trusted + direct)
     ranked = rank_sources(all_sources, f"{country} {agenda}")

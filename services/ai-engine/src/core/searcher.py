@@ -38,18 +38,18 @@ async def keyword_crawl_search(
     seen_urls: set[str] = set()
     results: list[dict] = []
 
-    for url in TRUSTED_SOURCE_URLS[:3]:
+    for url in TRUSTED_SOURCE_URLS[:2]:
         try:
-            html = await fetch_page(url)
+            html = await fetch_page(url, timeout=5)
             if not html:
                 continue
-            links = extract_links(html, url)[:3]
+            links = extract_links(html, url)[:2]
             for link in links:
                 if link in seen_urls:
                     continue
                 seen_urls.add(link)
                 try:
-                    article_html = await fetch_page(link)
+                    article_html = await fetch_page(link, timeout=5)
                     if not article_html:
                         continue
                     text = extract_text_simple(article_html)

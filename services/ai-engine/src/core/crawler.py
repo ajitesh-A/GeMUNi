@@ -5,7 +5,7 @@ from urllib.parse import urlparse, urljoin
 from typing import Optional
 
 
-async def fetch_page(url: str, timeout: int = 15) -> Optional[str]:
+async def fetch_page(url: str, timeout: int = 5) -> Optional[str]:
     try:
         async with httpx.AsyncClient(
             timeout=timeout,
