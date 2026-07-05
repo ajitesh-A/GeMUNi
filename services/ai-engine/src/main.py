@@ -29,7 +29,7 @@ async def _run_scheduler():
 
 
 app = FastAPI(
-    title="GeMUNi.ai AI Engine",
+    title="GeMUNi AI Engine",
     description="AI-powered research engine for Model United Nations",
     version="0.1.0",
     lifespan=lifespan,

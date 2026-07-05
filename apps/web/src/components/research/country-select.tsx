@@ -16,7 +16,7 @@ export function CountrySelect({ value, onChange }: CountrySelectProps) {
     () =>
       COUNTRIES.filter((c) =>
         c.toLowerCase().includes(query.toLowerCase()),
-      ).slice(0, 20),
+      ),
     [query],
   )
 

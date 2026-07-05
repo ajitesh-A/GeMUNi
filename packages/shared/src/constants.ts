@@ -34,9 +34,11 @@ export const COUNTRIES = [
 ] as const
 
 export const COMMITTEES = [
-  { value: 'UNGA', label: 'UN General Assembly', un: true },
   { value: 'UNHRC', label: 'UN Human Rights Council', un: true },
   { value: 'UNSC', label: 'UN Security Council', un: true },
+  { value: 'ECOFIN', label: 'Economic and Financial Committee', un: true },
+  { value: 'LEGAL', label: 'Legal Committee', un: true },
+  { value: 'INTERPOL', label: 'International Criminal Police Organization', un: true },
   { value: 'WHO', label: 'World Health Organization', un: true },
   { value: 'ECOSOC', label: 'Economic and Social Council', un: true },
   { value: 'UN_WOMEN', label: 'UN Women', un: true },

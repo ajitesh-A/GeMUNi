@@ -22,7 +22,7 @@ search:
 outgoing:
   request_timeout: 10.0
   max_request_timeout: 15.0
-  useragent_suffix: "GeMUNi.ai MUN Research"
+  useragent_suffix: "GeMUNi MUN Research"
 
 enabled_plugins:
   - "Basic Calculator"

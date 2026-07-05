@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { Logo } from '@/components/ui/logo'
 
 export function Navbar() {
   const { data: session } = useSession()
@@ -11,9 +12,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="text-xl font-bold text-accent">
-          GeMUNi.ai
-        </Link>
+        <Logo />
 
         <nav className="flex items-center gap-4">
           {session?.user ? (

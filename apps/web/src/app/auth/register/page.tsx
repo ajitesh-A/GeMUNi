@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { Logo } from '@/components/ui/logo'
 
 export default function RegisterPage() {
   const [error, setError] = useState('')
@@ -53,10 +54,8 @@ export default function RegisterPage() {
       <div className="flex min-h-screen items-center justify-center bg-background px-6">
         <div className="w-full max-w-sm text-center">
           <div className="mb-8">
-            <Link href="/" className="text-2xl font-bold text-accent">
-              GeMUNi.ai
-            </Link>
-            <h1 className="mt-4 text-xl font-semibold text-accent">Check your email</h1>
+          <Logo />
+          <h1 className="mt-4 text-xl font-semibold text-accent">Check your email</h1>
             <p className="mt-2 text-sm text-muted">
               We sent a verification link to your email address. Click the link to activate your account.
             </p>
@@ -76,9 +75,7 @@ export default function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <Link href="/" className="text-2xl font-bold text-accent">
-            GeMUNi.ai
-          </Link>
+          <Logo />
           <h1 className="mt-4 text-xl font-semibold text-accent">Create Account</h1>
           <p className="mt-1 text-sm text-muted">
             Start generating research reports instantly

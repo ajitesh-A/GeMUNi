@@ -12,7 +12,7 @@ async def fetch_page(url: str, timeout: int = 15) -> Optional[str]:
             follow_redirects=True,
             headers={
                 "User-Agent": (
-                    "GeMUNi.ai/1.0 Research Crawler "
+                    "GeMUNi/1.0 Research Crawler "
                     "(educational project; respects robots.txt)"
                 ),
             },

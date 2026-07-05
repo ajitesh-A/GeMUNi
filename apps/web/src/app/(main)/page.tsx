@@ -131,7 +131,7 @@ export default function LandingPage() {
       </motion.section>
 
       <footer className="border-t border-gray-100 py-8 text-center text-sm text-muted">
-        <p>&copy; {new Date().getFullYear()} GeMUNi.ai. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} GeMUNi. All rights reserved.</p>
       </footer>
     </div>
   )

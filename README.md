@@ -1,8 +1,8 @@
-# GeMUNi.ai
+# GeMUNi
 
 **AI-powered, source-backed research for Model United Nations delegates.**
 
-GeMUNi.ai automatically gathers information from hundreds of trusted websites, compiles it into concise research reports, cites every factual statement, and presents delegates with comprehensive briefing material for any MUN committee and agenda.
+GeMUNi automatically gathers information from hundreds of trusted websites, compiles it into concise research reports, cites every factual statement, and presents delegates with comprehensive briefing material for any MUN committee and agenda.
 
 ## Features
 
