@@ -54,38 +54,39 @@ async function generateReport(
 ) {
   try {
     if (AI_ENGINE_URL) {
-      const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 150000)
-
-      const res = await fetch(`${AI_ENGINE_URL}/api/v1/generate`, {
+      const startRes = await fetch(`${AI_ENGINE_URL}/api/v1/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ report_id: reportId, country, committee, agenda }),
-        signal: controller.signal,
       })
-      clearTimeout(timeout)
 
-      if (res.ok) {
-        const data = await res.json()
-        if (data.sections) {
-          await saveSections(reportId, data.sections)
-          await prisma.report.update({
-            where: { id: reportId },
-            data: { status: 'completed' },
-          })
-          return
-        } else {
-          console.error(`Generate AI engine returned OK but no sections:`, JSON.stringify(data))
+      if (startRes.ok) {
+        const maxAttempts = 60
+        for (let i = 0; i < maxAttempts; i++) {
+          await new Promise(r => setTimeout(r, 3000))
+          const pollRes = await fetch(`${AI_ENGINE_URL}/api/v1/generate/${reportId}/result`)
+          if (!pollRes.ok) continue
+          const data = await pollRes.json()
+          if (data.status === 'processing') continue
+          if (data.sections) {
+            await saveSections(reportId, data.sections)
+            await prisma.report.update({
+              where: { id: reportId },
+              data: { status: 'completed' },
+            })
+            return
+          }
         }
+        console.error('Generate AI engine polling timed out')
       } else {
-        const body = await res.text().catch(() => '')
-        console.error(`Generate AI engine returned ${res.status}:`, body)
+        const body = await startRes.text().catch(() => '')
+        console.error(`Generate AI engine returned ${startRes.status}:`, body)
       }
     } else {
       console.error('Generate AI_ENGINE_URL not set')
     }
   } catch (e) {
-    console.error('Generate AI engine fetch failed:', e)
+    console.error('Generate AI engine failed:', e)
   }
 
   console.error('Falling back to mock generation')

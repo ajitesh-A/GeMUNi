@@ -14,9 +14,17 @@ from src.llm.router import llm
 
 router = APIRouter()
 
+_pipeline_results: dict[str, ReportResult | None] = {}
 
-@router.post("/generate", response_model=ReportResult)
+
+@router.post("/generate", response_model=GenerateResponse)
 async def generate_research(req: GenerateRequest):
+    _pipeline_results[req.report_id] = None
+    asyncio.create_task(_run_pipeline(req))
+    return GenerateResponse(report_id=req.report_id, status="processing")
+
+
+async def _run_pipeline(req: GenerateRequest):
     try:
         result = await asyncio.wait_for(
             run_research_pipeline(
@@ -25,11 +33,13 @@ async def generate_research(req: GenerateRequest):
                 agenda=req.agenda,
                 report_id=req.report_id,
             ),
-            timeout=100,
+            timeout=120,
         )
-        return result
+        _pipeline_results[req.report_id] = result
+        print(f"[Generate] Pipeline completed for {req.report_id}")
     except asyncio.TimeoutError:
-        return ReportResult(
+        print(f"[Generate] Pipeline timed out for {req.report_id}")
+        _pipeline_results[req.report_id] = ReportResult(
             report_id=req.report_id,
             country=req.country,
             committee=req.committee,
@@ -45,7 +55,7 @@ async def generate_research(req: GenerateRequest):
         )
     except Exception as e:
         print(f"[Generate] Pipeline failed: {e}")
-        return ReportResult(
+        _pipeline_results[req.report_id] = ReportResult(
             report_id=req.report_id,
             country=req.country,
             committee=req.committee,
@@ -59,6 +69,14 @@ async def generate_research(req: GenerateRequest):
                 )
             ],
         )
+
+
+@router.get("/generate/{report_id}/result")
+async def get_generate_result(report_id: str):
+    result = _pipeline_results.get(report_id)
+    if result is None:
+        return {"status": "processing"}
+    return result
 
 
 @router.post("/chat", response_model=ChatResponse)
