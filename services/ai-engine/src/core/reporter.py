@@ -14,7 +14,7 @@ REPORT_SECTIONS = [
     "possible_solutions",
 ]
 
-MAX_CONCURRENT_LLM = 3
+MAX_CONCURRENT_LLM = 2
 
 
 async def assemble_report(
@@ -26,6 +26,7 @@ async def assemble_report(
     sem = asyncio.Semaphore(MAX_CONCURRENT_LLM)
 
     async def gen_section(idx: int, section_type: str) -> SectionResult:
+        await asyncio.sleep(idx * 2)
         async with sem:
             try:
                 content, context = await generate_section(

@@ -13,9 +13,11 @@ def get_embedding_model() -> TextEmbedding:
 
 def embed_text(text: str) -> list[float]:
     model = get_embedding_model()
-    return list(model.embed(text))[0]
+    for embedding in model.embed(text):
+        return embedding.tolist()
+    return []
 
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
     model = get_embedding_model()
-    return [list(e)[0] for e in model.embed(texts)]
+    return [embedding.tolist() for embedding in model.embed(texts)]

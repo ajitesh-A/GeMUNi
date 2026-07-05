@@ -8,7 +8,7 @@ GROQ_MODELS = [
 ]
 
 MAX_RETRIES = 3
-BASE_DELAY = 2.0
+BASE_DELAY = 3.0
 
 
 class GroqProvider:
