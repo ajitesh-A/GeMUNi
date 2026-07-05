@@ -33,7 +33,7 @@ async def _run_pipeline(req: GenerateRequest):
                 agenda=req.agenda,
                 report_id=req.report_id,
             ),
-            timeout=120,
+            timeout=180,
         )
         _pipeline_results[req.report_id] = result
         print(f"[Generate] Pipeline completed for {req.report_id}")

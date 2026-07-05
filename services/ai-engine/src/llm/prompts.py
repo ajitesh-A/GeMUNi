@@ -23,59 +23,27 @@ SECTION_PROMPTS = {
         "government type, foreign policy orientation, key alliances, "
         "and UN memberships. Focus on aspects relevant to the agenda."
     ),
-    "agenda_background": (
-        "Write a background section on '{agenda}' using bullet points and "
+    "agenda_overview": (
+        "Write an agenda overview on '{agenda}' using bullet points and "
         "short sections. Include: issue history, timeline of key events, "
         "affected countries and regions, key organizations involved, "
-        "relevant statistics, and current challenges."
-    ),
-    "current_situation": (
-        "Describe the current situation regarding '{agenda}' using bullet points. "
-        "Focus on recent developments, ongoing challenges, and the current state "
-        "of affairs. Include recent data and reports."
+        "relevant statistics, current challenges, and recent developments. "
+        "Use **bold** sub-headings to separate 'Background' and 'Current Situation'."
     ),
     "country_position": (
-        "Describe {country}'s official position on '{agenda}' using bullet points. "
-        "Include: official statements, UN speeches and voting records, "
-        "recent policy actions, and diplomatic initiatives. "
-        "Cite specific UN documents and statements where possible."
+        "Describe {country}'s official position on '{agenda}' and list relevant "
+        "UN resolutions. Use **bold** sub-headings to separate two sections:\n\n"
+        "**Country Position:** Official statements, UN speeches and voting records, "
+        "recent policy actions, and diplomatic initiatives.\n\n"
+        "**UN Resolutions:** Resolution numbers and titles, voting record "
+        "(especially {country}'s vote), sponsors, and implementation status."
     ),
-    "un_resolutions": (
-        "List relevant UN resolutions related to '{agenda}' as bullet points. "
-        "For each resolution include: resolution number and title, "
-        "voting record (especially {country}'s vote), sponsors, "
-        "and implementation status."
-    ),
-    "bloc_positions": (
-        "Describe the likely bloc positions on '{agenda}' using sections with "
-        "**bold** sub-headings. Identify: likely allies for {country}, "
-        "likely opponents, non-aligned states, and regional bloc positions. "
-        "Explain the reasoning behind each bloc's position."
-    ),
-    "speaking_points_and_bloc_positions": (
-        "Generate debate-ready speaking points for {country} on '{agenda}' and "
-        "describe the likely bloc positions. Use **bold** sub-headings to separate "
-        "two sections:\n\n"
-        "**Bloc Positions:** Identify likely allies for {country}, likely opponents, "
-        "non-aligned states, and regional bloc positions. Explain reasoning.\n\n"
-        "**Speaking Points:** Strong arguments supporting {country}'s position, "
-        "likely counterarguments from opponents, and suggested responses."
-    ),
-    "speaking_points": (
-        "Generate debate-ready speaking points for {country} on '{agenda}' as "
-        "bullet points. Include: strong arguments supporting {country}'s position, "
-        "likely counterarguments from opponents, and suggested responses."
-    ),
-    "questions_to_ask": (
-        "Generate strategic questions that {country} can ask other delegations "
-        "during committee sessions on '{agenda}' as numbered bullet points. "
-        "Questions should challenge opposing positions "
-        "and advance {country}'s diplomatic objectives."
-    ),
-    "possible_solutions": (
-        "Propose possible solutions to '{agenda}' that align with {country}'s "
-        "position. Use numbered bullet points. Include: policy recommendations, "
-        "diplomatic initiatives, potential resolution clauses, "
-        "and implementation strategies."
+    "speaking_points_and_strategies": (
+        "Generate speaking points, bloc positions, and possible solutions "
+        "for {country} on '{agenda}'. Use **bold** sub-headings to separate:\n\n"
+        "**Bloc Positions:** Likely allies, opponents, non-aligned states.\n\n"
+        "**Speaking Points:** Strong arguments, counterarguments, responses.\n\n"
+        "**Proposed Solutions:** Policy recommendations, diplomatic initiatives, "
+        "potential resolution clauses, and implementation strategies."
     ),
 }

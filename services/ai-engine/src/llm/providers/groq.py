@@ -7,8 +7,8 @@ GROQ_MODELS = [
     "llama-3.3-70b-versatile",
 ]
 
-MAX_RETRIES = 3
-BASE_DELAY = 3.0
+MAX_RETRIES = 2
+BASE_DELAY = 2.0
 
 
 class GroqProvider:

@@ -6,12 +6,9 @@ from src.api.schemas import SectionResult, CitationResult
 REPORT_SECTIONS = [
     "executive_summary",
     "country_profile",
-    "agenda_background",
-    "current_situation",
+    "agenda_overview",
     "country_position",
-    "un_resolutions",
-    "speaking_points_and_bloc_positions",
-    "possible_solutions",
+    "speaking_points_and_strategies",
 ]
 
 MAX_CONCURRENT_LLM = 2

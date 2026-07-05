@@ -35,17 +35,6 @@ class LLMRouter:
         temperature: float = 0.3,
         max_tokens: int = 1024,
     ) -> str:
-        if settings.groq_api_key:
-            try:
-                return await self.groq.generate(
-                    system_prompt=system_prompt,
-                    user_prompt=user_prompt,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                )
-            except Exception as e:
-                print(f"[LLM Router] Groq failed: {e}")
-
         if settings.gemini_api_key:
             try:
                 return await self.gemini.generate(
@@ -56,6 +45,17 @@ class LLMRouter:
                 )
             except Exception as e:
                 print(f"[LLM Router] Gemini failed: {e}")
+
+        if settings.groq_api_key:
+            try:
+                return await self.groq.generate(
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+            except Exception as e:
+                print(f"[LLM Router] Groq failed: {e}")
 
         print("[LLM Router] Falling through to OpenRouter")
         return await self.openrouter.generate(
