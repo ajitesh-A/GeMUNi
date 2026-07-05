@@ -9,6 +9,8 @@ const generateSchema = z.object({
   agenda: z.string().min(1),
 })
 
+const AI_ENGINE_URL = process.env.AI_ENGINE_URL || ''
+
 export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user?.id) {
@@ -29,9 +31,10 @@ export async function POST(req: Request) {
       },
     })
 
-    // TODO: Queue AI engine job (Phase 4)
-    // For now, simulate a delay and generate a mock report
-    simulateGeneration(report.id)
+    // Try to call the AI engine, fall back to simulation if unavailable
+    callAiEngine(report.id, country, committee, agenda).catch(() => {
+      simulateGeneration(report.id)
+    })
 
     return NextResponse.json(
       { report_id: report.id, status: 'generating' },
@@ -45,9 +48,31 @@ export async function POST(req: Request) {
   }
 }
 
+async function callAiEngine(
+  reportId: string,
+  country: string,
+  committee: string,
+  agenda: string,
+) {
+  if (!AI_ENGINE_URL) throw new Error('AI engine URL not configured')
+
+  const res = await fetch(`${AI_ENGINE_URL}/api/v1/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ report_id: reportId, country, committee, agenda }),
+  })
+
+  if (!res.ok) throw new Error('AI engine request failed')
+
+  const data = await res.json()
+
+  await prisma.report.update({
+    where: { id: reportId },
+    data: { status: data.status },
+  })
+}
+
 async function simulateGeneration(reportId: string) {
-  // Simulates AI generation pipeline
-  // Phase 4 will replace this with real AI engine calls
   const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
   await delay(2000)
