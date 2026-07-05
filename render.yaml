@@ -42,7 +42,7 @@ services:
       - key: AUTH_SECRET
         sync: false
       - key: AUTH_URL
-        value: https://nexgemai.app
+        value: https://gemuni-frontend.onrender.com
       - key: AI_ENGINE_URL
         value: https://gemuni-ai-engine.onrender.com
       - key: RESEND_API_KEY

@@ -1,7 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { DemoTour } from '@/components/landing/demo-tour'
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -15,6 +17,8 @@ const stagger = {
 }
 
 export default function LandingPage() {
+  const [showDemo, setShowDemo] = useState(false)
+
   return (
     <div className="min-h-screen bg-background">
       <motion.section
@@ -52,17 +56,16 @@ export default function LandingPage() {
           >
             Start Research
           </Link>
-          <Link
-            href="#features"
-            className="rounded-lg border border-gray-200 bg-white px-8 py-3 text-base font-semibold text-accent hover:bg-gray-50"
+          <button
+            onClick={() => setShowDemo(true)}
+            className="rounded-lg border border-border bg-card px-8 py-3 text-base font-semibold text-accent hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             View Demo
-          </Link>
+          </button>
         </motion.div>
       </motion.section>
 
       <motion.section
-        id="features"
         className="mx-auto mt-32 max-w-7xl px-6"
         initial="initial"
         whileInView="animate"
@@ -88,7 +91,7 @@ export default function LandingPage() {
               key={f.title}
               variants={fadeUp}
               transition={{ duration: 0.5 }}
-              className="rounded-xl border border-gray-100 bg-white p-8"
+              className="rounded-xl border border-border bg-card p-8"
             >
               <h3 className="text-lg font-semibold text-accent">{f.title}</h3>
               <p className="mt-2 text-sm text-muted">{f.desc}</p>
@@ -96,6 +99,8 @@ export default function LandingPage() {
           ))}
         </div>
       </motion.section>
+
+      {showDemo && <DemoTour onClose={() => setShowDemo(false)} />}
 
       <motion.section
         className="mx-auto mt-32 max-w-7xl px-6 pb-32"
@@ -121,7 +126,7 @@ export default function LandingPage() {
         </div>
       </motion.section>
 
-      <footer className="border-t border-gray-100 py-8 text-center text-sm text-muted">
+      <footer className="border-t border-border py-8 text-center text-sm text-muted">
         <p>&copy; {new Date().getFullYear()} GeMUNi. All rights reserved.</p>
       </footer>
     </div>

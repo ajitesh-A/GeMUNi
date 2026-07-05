@@ -31,26 +31,34 @@ export async function POST(req: Request) {
 
     if (AI_ENGINE_URL) {
       try {
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 30000)
+
         const aiRes = await fetch(`${AI_ENGINE_URL}/api/v1/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ report_id, message }),
+          signal: controller.signal,
         })
+        clearTimeout(timeout)
 
         if (aiRes.ok) {
           const data = await aiRes.json()
           return NextResponse.json(data)
         }
-      } catch {}
+
+        const errorBody = await aiRes.text().catch(() => '')
+        console.error(`Chat AI engine returned ${aiRes.status}:`, errorBody)
+      } catch (e) {
+        console.error('Chat AI engine fetch failed:', e)
+      }
     }
 
     const response = `Regarding **${report.country}** and **${report.agenda}** in **${report.committee}**:
 
 Based on the available research, here's what I can tell you about "${message}":
 
-The research report covers this topic. For the most accurate and cited information, please refer to the generated report sections above. 
-
-To get AI-powered chat responses, configure the AI_ENGINE_URL environment variable to point to your running FastAPI AI Engine service.`
+The research report covers this topic. For the most accurate and cited information, please refer to the generated report sections above.`
 
     return NextResponse.json({ response, citations: [] })
   } catch (error) {
