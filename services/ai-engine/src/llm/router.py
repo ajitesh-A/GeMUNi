@@ -1,16 +1,32 @@
+from src.llm.providers.groq import GroqProvider
+from src.llm.providers.gemini import GeminiProvider
 from src.llm.providers.openrouter import OpenRouterProvider
 from src.config import settings
 
 
 class LLMRouter:
     def __init__(self):
-        self._provider = None
+        self._groq = None
+        self._gemini = None
+        self._openrouter = None
 
     @property
-    def provider(self):
-        if self._provider is None:
-            self._provider = OpenRouterProvider()
-        return self._provider
+    def groq(self):
+        if self._groq is None:
+            self._groq = GroqProvider()
+        return self._groq
+
+    @property
+    def gemini(self):
+        if self._gemini is None:
+            self._gemini = GeminiProvider()
+        return self._gemini
+
+    @property
+    def openrouter(self):
+        if self._openrouter is None:
+            self._openrouter = OpenRouterProvider()
+        return self._openrouter
 
     async def generate(
         self,
@@ -19,7 +35,29 @@ class LLMRouter:
         temperature: float = 0.3,
         max_tokens: int = 2048,
     ) -> str:
-        return await self.provider.generate(
+        if settings.groq_api_key:
+            try:
+                return await self.groq.generate(
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+            except Exception:
+                pass
+
+        if settings.gemini_api_key:
+            try:
+                return await self.gemini.generate(
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+            except Exception:
+                pass
+
+        return await self.openrouter.generate(
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             temperature=temperature,

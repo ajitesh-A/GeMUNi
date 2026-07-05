@@ -1,0 +1,3 @@
+FROM searxng/searxng:latest
+COPY searxng_settings.yml /etc/searxng/settings.yml
+EXPOSE 8888

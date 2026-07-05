@@ -1,5 +1,17 @@
 services:
   - type: web
+    name: gemuni-searxng
+    runtime: docker
+    repo: https://github.com/searxng/searxng
+    region: oregon
+    plan: free
+    dockerfilePath: services/ai-engine/Dockerfile.searxng
+    dockerContext: services/ai-engine
+    envVars:
+      - key: SEARXNG_BASE_URL
+        value: https://gemuni-searxng.onrender.com
+
+  - type: web
     name: gemuni-ai-engine
     runtime: python
     region: oregon
@@ -11,8 +23,10 @@ services:
     envVars:
       - key: OPENROUTER_API_KEY
         sync: false
+      - key: GROQ_API_KEY
+        sync: false
       - key: LLM_MODEL
-        value: deepseek/deepseek-chat
+        value: meta-llama/llama-3.3-70b-instruct:free
       - key: DATABASE_URL
         sync: false
       - key: REDIS_URL

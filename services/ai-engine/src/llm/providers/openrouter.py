@@ -2,11 +2,9 @@ import httpx
 from src.config import settings
 
 FREE_MODELS = [
-    "deepseek/deepseek-chat",
-    "qwen/qwen2.5-72b-instruct",
-    "mistralai/mistral-7b-instruct",
-    "meta-llama/llama-3.2-3b-instruct",
-    "google/gemini-2.0-flash-exp:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "qwen/qwen2.5-72b-instruct:free",
+    "mistralai/mistral-nemo:free",
 ]
 
 MOCK_SECTIONS = {
@@ -153,7 +151,7 @@ class OpenRouterProvider:
         if not self.api_key:
             raise ValueError("No API key")
 
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=10.0) as client:
             response = await client.post(
                 f"{self.base_url}/chat/completions",
                 headers={
@@ -171,8 +169,8 @@ class OpenRouterProvider:
                 },
             )
 
-            if response.status_code == 402:
-                raise ValueError("Payment required")
+            if response.status_code in (402, 429):
+                raise ValueError(f"OpenRouter {response.status_code}")
 
             response.raise_for_status()
             data = response.json()
