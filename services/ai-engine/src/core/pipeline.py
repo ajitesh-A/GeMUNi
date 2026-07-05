@@ -41,8 +41,8 @@ async def run_research_pipeline(
 
     trusted, direct = await asyncio.gather(_search(), _crawl())
 
-    all_sources = deduplicate_sources(trusted + direct)
-    ranked = rank_sources(all_sources, f"{country} {agenda}")
+    all_sources = await asyncio.to_thread(deduplicate_sources, trusted + direct)
+    ranked = await asyncio.to_thread(rank_sources, all_sources, f"{country} {agenda}")
 
     if ranked:
         try:
@@ -64,8 +64,9 @@ async def run_research_pipeline(
                 for s in ranked[:20]
             ]
 
-            embeddings = embed_texts(texts)
-            store_embeddings(
+            embeddings = await asyncio.to_thread(embed_texts, texts)
+            await asyncio.to_thread(
+                store_embeddings,
                 ids=ids,
                 embeddings=embeddings,
                 metadatas=metadatas,
