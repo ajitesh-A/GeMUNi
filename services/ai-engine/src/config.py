@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     openrouter_api_key: str = ""
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     llm_model: str = "meta-llama/llama-3.3-70b-instruct:free"
-    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
     max_sources_per_section: int = 10
     report_timeout_seconds: int = 120
 
