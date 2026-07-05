@@ -62,7 +62,7 @@ const config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [],
 }
 
 module.exports = config
