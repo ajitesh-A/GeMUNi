@@ -98,11 +98,6 @@ async function saveSections(reportId: string, sections: any[]) {
 }
 
 async function mockGeneration(reportId: string) {
-  await prisma.report.update({
-    where: { id: reportId },
-    data: { status: 'completed' },
-  })
-
   const sections = [
     { sectionType: 'executive_summary', content: { text: 'India supports international cooperation on refugee protection while emphasizing the primary responsibility of host nations. As a non-signatory to the 1951 Refugee Convention, India has historically provided asylum to persecuted groups including Tibetans and Sri Lankan Tamils under domestic frameworks.' }, orderIndex: 0 },
     { sectionType: 'country_profile', content: { text: '**Capital:** New Delhi\n**Population:** 1.4 billion\n**GDP:** $3.7 trillion\n**Government:** Federal parliamentary democratic republic\n**Foreign Policy:** Non-alignment, strategic autonomy, South-South cooperation\n**Key Alliances:** BRICS, SCO, G20, Commonwealth\n**UN Memberships:** Founding member of UN, active in peacekeeping missions' }, orderIndex: 1 },
@@ -125,4 +120,9 @@ async function mockGeneration(reportId: string) {
       },
     })
   }
+
+  await prisma.report.update({
+    where: { id: reportId },
+    data: { status: 'completed' },
+  })
 }

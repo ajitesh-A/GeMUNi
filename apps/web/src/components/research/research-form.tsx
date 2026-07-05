@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { CountrySelect } from './country-select'
 import { CommitteeSelect } from './committee-select'
@@ -45,23 +45,35 @@ export function ResearchForm() {
 
       const { report_id } = await res.json()
 
+      let attempts = 0
       const interval = setInterval(async () => {
-        const statusRes = await fetch(`/api/research/${report_id}/status`)
-        const data = await statusRes.json()
-
-        setProgress(data.progress || 0)
-
-        const completedStages = Math.floor((data.progress || 0) / (100 / PROGRESS_STAGES.length))
-        setStages((prev) =>
-          prev.map((s, i) => ({ ...s, done: i < completedStages })),
-        )
-
-        if (data.status === 'completed' || data.status === 'failed') {
-          clearInterval(interval)
-          setGenerating(false)
-          if (data.status === 'completed') {
-            router.push(`/research/${report_id}`)
+        try {
+          attempts++
+          if (attempts > 30) {
+            clearInterval(interval)
+            setGenerating(false)
+            return
           }
+
+          const statusRes = await fetch(`/api/research/${report_id}/status`)
+          const data = await statusRes.json()
+
+          setProgress(data.progress || 0)
+
+          const completedStages = Math.floor((data.progress || 0) / (100 / PROGRESS_STAGES.length))
+          setStages((prev) =>
+            prev.map((s, i) => ({ ...s, done: i < completedStages })),
+          )
+
+          if (data.status === 'completed') {
+            clearInterval(interval)
+            router.push(`/research/${report_id}`)
+          } else if (data.status === 'failed') {
+            clearInterval(interval)
+            setGenerating(false)
+          }
+        } catch {
+          // polling error, retry on next interval
         }
       }, 1500)
     } catch {
