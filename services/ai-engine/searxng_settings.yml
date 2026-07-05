@@ -11,6 +11,8 @@ ui:
   default_locale: en
   theme: simple
 
+default_doi_resolver: "doi.org"
+
 search:
   safe_search: 0
   autocomplete: ""
@@ -18,7 +20,6 @@ search:
   formats:
     - html
     - json
-  default_doi_resolver: "doi.org"
 
 outgoing:
   request_timeout: 10.0
