@@ -58,7 +58,7 @@ export default function LandingPage() {
           </Link>
           <button
             onClick={() => setShowDemo(true)}
-            className="rounded-lg border border-border bg-card px-8 py-3 text-base font-semibold text-accent hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="rounded-lg border border-border bg-card px-8 py-3 text-base font-semibold text-accent dark:text-foreground hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
           >
             View Demo
           </button>

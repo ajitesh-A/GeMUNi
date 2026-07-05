@@ -63,13 +63,13 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      <div className="mb-6 flex gap-4 border-b border-gray-100">
+      <div className="mb-6 flex gap-4 border-b border-border">
         <button
           onClick={() => setTab('recent')}
           className={`pb-3 text-sm font-medium ${
             tab === 'recent'
               ? 'border-b-2 border-accent text-accent'
-              : 'text-muted hover:text-accent'
+              : 'text-muted hover:text-accent dark:hover:text-foreground'
           }`}
         >
           Recent Reports
@@ -79,7 +79,7 @@ export default function DashboardPage() {
           className={`pb-3 text-sm font-medium ${
             tab === 'saved'
               ? 'border-b-2 border-accent text-accent'
-              : 'text-muted hover:text-accent'
+              : 'text-muted hover:text-accent dark:hover:text-foreground'
           }`}
         >
           Saved

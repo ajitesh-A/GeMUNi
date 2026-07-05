@@ -54,11 +54,9 @@ export async function POST(req: Request) {
       }
     }
 
-    const response = `Regarding **${report.country}** and **${report.agenda}** in **${report.committee}**:
+    const response = `**${report.country}** · **${report.committee}** · *${report.agenda}*
 
-Based on the available research, here's what I can tell you about "${message}":
-
-The research report covers this topic. For the most accurate and cited information, please refer to the generated report sections above.`
+Based on available research, the most accurate and cited information is in the report sections above. Refer to those for verified details on "${message}".`
 
     return NextResponse.json({ response, citations: [] })
   } catch (error) {

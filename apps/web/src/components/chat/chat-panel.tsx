@@ -108,7 +108,7 @@ export function ChatPanel({ reportId }: ChatPanelProps) {
   }
 
   return (
-    <div className="flex h-[600px] flex-col overflow-hidden rounded-xl border border-border bg-card">
+    <div className="flex h-[calc(100vh-12rem)] flex-col overflow-hidden rounded-xl border border-border bg-card">
       <div className="flex items-center gap-3 bg-accent px-5 py-4">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-white">
           <SparkleIcon />

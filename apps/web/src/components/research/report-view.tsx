@@ -70,7 +70,7 @@ export function ReportView({
     <div className="mx-auto max-w-6xl">
       <Link
         href="/dashboard"
-        className="mb-6 flex items-center gap-1 text-sm text-muted hover:text-accent transition-colors"
+        className="mb-6 flex items-center gap-1 text-sm text-muted hover:text-accent dark:hover:text-foreground transition-colors"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -85,7 +85,7 @@ export function ReportView({
               <Badge variant="primary">Research Report</Badge>
               <Badge>{committee}</Badge>
             </div>
-            <h1 className="text-3xl font-bold text-accent">{country}</h1>
+            <h1 className="text-3xl font-bold text-accent dark:text-foreground">{country}</h1>
             <p className="mt-2 text-lg text-muted">{agenda}</p>
           </header>
 
@@ -97,7 +97,7 @@ export function ReportView({
 
               return (
                 <section key={section.section_type}>
-                  <h2 className="mb-4 text-xl font-semibold text-accent">
+                  <h2 className="mb-4 text-xl font-semibold text-accent dark:text-foreground">
                     {idx + 1}. {SECTION_LABELS[section.section_type] || section.section_type}
                   </h2>
                   <Separator className="mb-4" />

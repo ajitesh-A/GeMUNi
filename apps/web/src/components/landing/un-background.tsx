@@ -13,8 +13,8 @@ export function UnBackground() {
         className="mt-20 flex items-center justify-center"
         aria-hidden="true"
       >
-        <div className="h-[600px] w-[600px] opacity-[0.15] blur-[6px] dark:opacity-[0.08]">
-          <svg viewBox="0 0 512 512" className="h-full w-full text-accent" fill="none">
+        <div className="h-[600px] w-[600px] opacity-[0.15] blur-[6px] dark:opacity-[0.2]">
+          <svg viewBox="0 0 512 512" className="h-full w-full text-[var(--un-logo)]" fill="none">
             <g stroke="currentColor" strokeWidth="1.2">
               <circle cx="256" cy="256" r="150" strokeWidth="1.8" />
               <ellipse cx="256" cy="256" rx="150" ry="120" strokeWidth="0.6" />

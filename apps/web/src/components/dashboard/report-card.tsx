@@ -32,11 +32,11 @@ export function ReportCard({
   })
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6 transition-shadow hover:shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-6 transition-shadow hover:shadow-sm">
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-lg font-semibold text-accent">{country}</h3>
+            <h3 className="text-lg font-semibold text-accent dark:text-foreground">{country}</h3>
             <Badge variant={status === 'completed' ? 'success' : 'default'}>
               {status}
             </Badge>
