@@ -18,6 +18,7 @@ search:
   formats:
     - html
     - json
+  default_doi_resolver: "doi.org"
 
 outgoing:
   request_timeout: 10.0
@@ -30,6 +31,4 @@ enabled_plugins:
   - "Open Access DOI rewrite"
   - "Tracker URL removal"
 
-searchdd:
-  safe_search: 0
-  autocomplete: ""
+
