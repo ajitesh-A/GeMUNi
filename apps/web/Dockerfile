@@ -14,4 +14,4 @@ RUN npx next build
 EXPOSE 3000
 ENV PORT=3000
 ENV NODE_ENV=production
-CMD ["node_modules/.bin/next", "start"]
+CMD npx prisma db push && node_modules/.bin/next start
