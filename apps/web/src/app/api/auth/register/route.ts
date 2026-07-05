@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { hash } from 'bcryptjs'
+import { randomUUID } from 'node:crypto'
 import { prisma } from '@/lib/prisma'
 import { sendVerificationEmail } from '@/lib/email'
 import { z } from 'zod'
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     }
 
     const passwordHash = await hash(password, 12)
-    const verificationToken = crypto.randomUUID()
+    const verificationToken = randomUUID()
 
     await prisma.user.create({
       data: { name, email, passwordHash, verificationToken },
