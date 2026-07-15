@@ -37,6 +37,7 @@ export async function POST(req: Request) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ report_id: report.id, country, committee, agenda }),
       }).catch(e => console.error('Generate: failed to start pipeline:', e))
+      pollForResult(report.id).catch(e => console.error('[Generate] poll failed:', e))
     } else {
       console.error('Generate: AI_ENGINE_URL not set')
     }
@@ -52,4 +53,43 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
+}
+
+async function pollForResult(reportId: string) {
+  if (!AI_ENGINE_URL) return
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 3000))
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 5000)
+      const res = await fetch(`${AI_ENGINE_URL}/api/v1/generate/${reportId}/result`, {
+        signal: controller.signal,
+      })
+      clearTimeout(timeout)
+      if (!res.ok) continue
+      const data = await res.json()
+      if (data.status === 'processing') continue
+      if (data.sections && data.sections.length > 0) {
+        for (const section of data.sections) {
+          await prisma.reportSection.create({
+            data: {
+              reportId,
+              sectionType: section.section_type,
+              content: JSON.stringify(section.content),
+              orderIndex: section.order_index,
+            },
+          })
+        }
+        await prisma.report.update({
+          where: { id: reportId },
+          data: { status: 'completed' },
+        })
+        console.log(`[Poll] Report ${reportId}: sections saved, completed`)
+        return
+      }
+    } catch {
+      // poll failed, retry
+    }
+  }
+  console.error(`[Poll] Report ${reportId}: timed out after 60 attempts`)
 }
